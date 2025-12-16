@@ -1,0 +1,41 @@
+#!/bin/bash
+set -e
+
+# Get current year
+CURRENT_YEAR=$(date +%Y)
+
+# Usage/help
+if [[ -z "$1" ]]; then
+  echo "Usage: $0 [year] <day>"
+  echo "  year: optional, defaults to current year ($CURRENT_YEAR)"
+  echo "  day:  required, 1-25"
+  exit 1
+fi
+
+# Parse arguments
+if [[ "$1" =~ ^[0-9]{4}$ ]]; then
+  YEAR="$1"
+  DAY="$2"
+else
+  YEAR="$CURRENT_YEAR"
+  DAY="$1"
+fi
+
+if [[ -z "$DAY" ]]; then
+  echo "Error: Day is required."
+  echo "Usage: $0 [year] <day>"
+  exit 1
+fi
+
+DAY_PADDED=$(printf "%02d" "$DAY")
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+TEMPLATE_DIR="$PROJECT_ROOT/templates"
+TARGET_DIR="$PROJECT_ROOT/$YEAR/$DAY_PADDED"
+
+mkdir -p "$TARGET_DIR"
+cp "$TEMPLATE_DIR/aoc.rb" "$TARGET_DIR/aoc.rb"
+cp "$TEMPLATE_DIR/aoc_test.rb" "$TARGET_DIR/aoc_test.rb"
+
+aoc download --year "$YEAR" --day "$DAY" --input-file "$TARGET_DIR/input" --puzzle-file "$TARGET_DIR/puzzle.md"
