@@ -11,13 +11,23 @@ class AocTest < Minitest::Test
   end
 
   def test_puzzle_one
-    assert_match(/Puzzle 1: \d+/, execute(INPUT))
+    assert_match(/Puzzle 1: 3/, execute(INPUT))
   end
 
   def test_puzzle_two
-    assert_match(/Puzzle 2: \d+/, execute(INPUT))
+    assert_match(/Puzzle 2: 14/, execute(INPUT))
   end
 end
 
 __END__
-# Paste sample input here for testing
+3-5
+10-14
+16-20
+12-18
+
+1
+5
+8
+11
+17
+32
